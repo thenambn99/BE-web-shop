@@ -48,8 +48,40 @@ const getAllUsers = async (req, res) => {
   }
 }
 
+const updateUser = async (req, res) => {
+  try {
+    const response = await userService.updateUser(req.body)
+    return res.status(200).json({
+      message: response.message,
+      success: response.success
+    })
+  }
+  catch (e) {
+    return res.status(500).json({
+      message: 'Error from server'
+    })
+  }
+}
+
+const deleteUser = async (req, res) => {
+  try {
+    const response = await userService.deleteUser(req.body)
+    return res.status(200).json({
+      message: response.message,
+      success: response.success
+    })
+  }
+  catch (e) {
+    return res.status(500).json({
+      message: 'Error from server'
+    })
+  }
+}
+
 module.exports = {
   handleLogin: handleLogin,
   handleRegister: handleRegister,
   getAllUsers: getAllUsers,
+  updateUser: updateUser,
+  deleteUser: deleteUser,
 }

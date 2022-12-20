@@ -17,6 +17,8 @@ const initWebRoutes = (app) => {
 
   // User
   router.get('/api/getAllUsers', verifyToken, userController.getAllUsers)
+  router.post('/api/updateUser', verifyToken, userController.updateUser)
+  router.post('/api/deleteUser', verifyToken, userController.deleteUser)
   // ProductController
   // router.post('/api/createProduct', productController.createProduct)
   // router.get('/api/editProduct', productController.editProduct)
