@@ -2,6 +2,7 @@ import express from 'express'
 import {getHomePage} from "../controllers/homeController"
 import userController from '../controllers/userController'
 import productController from '../controllers/productController'
+import categoryController from '../controllers/categoryController'
 import { refreshToken, verifyToken } from '../middleware/authToken'
 const router = express.Router()
 
@@ -19,6 +20,10 @@ const initWebRoutes = (app) => {
   router.get('/api/getAllUsers', verifyToken, userController.getAllUsers)
   router.post('/api/updateUser', verifyToken, userController.updateUser)
   router.post('/api/deleteUser', verifyToken, userController.deleteUser)
+
+  // Categories
+  router.get('/api/getAllCategories', verifyToken, categoryController.getAllCategories )
+
   // ProductController
   // router.post('/api/createProduct', productController.createProduct)
   // router.get('/api/editProduct', productController.editProduct)
