@@ -33,14 +33,15 @@ const initWebRoutes = (app) => {
   router.post('/api/updateBrand', verifyToken, brandController.updateBrand)
   router.post('/api/createBrand', verifyToken, brandController.createBrand)
   router.post('/api/deleteBrand', verifyToken, brandController.deleteBrand)
+  router.get('/api/getAllBrands', verifyToken, brandController.getAllBrands)
 
 
   // ProductController
-  // router.post('/api/createProduct', productController.createProduct)
-  // router.get('/api/editProduct', productController.editProduct)
-  // router.get('/api/getProductCategory', productController.getCategoryList)
-  // router.get('/api/getProductBrand', productController.getBrandByCategoryId)
-  // router.get('/api/getProductCategoryChild', productController.getCategoryChild)
+  router.post('/api/updateProduct', verifyToken, productController.updateProduct)
+  router.get('/api/getProductList', verifyToken, productController.getProductList)
+  router.get('/api/getProductById', verifyToken, productController.getProductById)
+  router.post('/api/deleteProduct', verifyToken, productController.deleteProduct)
+
   return app.use("/", router)
 
 }

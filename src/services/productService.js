@@ -1,117 +1,178 @@
 import db from "../models/index";
 
-const createProduct = async (data) => {
+const updateProduct = async (data) => {
+  let res = {};
   try {
-    await db.Product.create({
-      product_name: data.product_name,
-      product_price: data.product_price,
-      product_quantity: data.product_quantity,
-      product_status: data.product_status,
-      brand_id: data.brand_id,
-      category_id: data.category_id,
-      category_child_id: data.category_child_id,
-      product_image: data.product_image,
-    });
+    if (!data?.product_id) {
+      const product = await db.Product.create({
+        product_name: data.product_name,
+        product_price: data.product_price,
+        product_status: data.product_status,
+        product_brand: data.product_brand,
+        product_type: data.product_type,
+        product_category: data.product_category,
+        product_des: data.product_des,
+        product_image: data.product_image,
+      });
+      if (product) {
+        data.product_detail.map(async (e) => {
+          const detail = await db.ProductDetail.create({
+            product_id: product.dataValues.id,
+            product_quantity: e.product_quantity,
+            product_size: e.product_size,
+          });
+        });
+        return (res = {
+          message: "Update product success",
+          success: true,
+        });
+      } else {
+        return (res = {
+          message: "Update product failed",
+          success: false,
+        });
+      }
+    } else {
+      const product = await db.Product.findOne({
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        where: {
+          id: Number(data.product_id),
+        },
+        raw: true,
+        nest: true,
+      });
+      if (product) {
+        await db.Product.update(
+          {
+            product_name: data.product_name,
+            product_price: data.product_price,
+            product_status: data.product_status,
+            product_brand: data.product_brand,
+            product_type: data.product_type,
+            product_category: data.product_category,
+            product_des: data.product_des,
+            product_image: data.product_image ? data.product_image : product.product_image,
+          },
+          {
+            where: { id: data.product_id },
+          }
+        );
+        data.product_detail.map(async (e) => {
+          await db.ProductDetail.update(
+            {
+              product_quantity: e.product_quantity,
+              product_size: e.product_size,
+            },
+            {
+              where: { id: e.id },
+            }
+          );
+        });
+        return (res = {
+          message: "Update product success",
+          success: true,
+        });
+      }
+    }
   } catch (e) {
     console.log(e);
   }
 };
 
-const editProduct = async (id) => {
+const getProductList = async () => {
+  let res = {};
   try {
-    const data = await db.Product.findOne({
+    const list = await db.Product.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
+      raw: true,
+      nest: true,
+    });
+
+    if (list) {
+      return (res = {
+        message: "Get product list success",
+        success: true,
+        result: list,
+      });
+    } else {
+      return (res = {
+        message: "Get product list failed",
+        success: false,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const getProductById = async (id) => {
+  let res = {};
+  try {
+    const product = await db.Product.findOne({
+      attributes: {
+        exclude: ["createdAt", "updatedAt", ],
+      },
       where: {
         id: id,
       },
       raw: true,
       nest: true,
     });
-    return {
-      result: data,
-    };
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const getCategoryList = async () => {
-  try {
-    const data = await db.Category.findAll({
-      attributes: { exclude: ["created_at", "updated_at"] },
+    
+    const detail = await db.ProductDetail.findAll({
+      attributes: { exclude: ["createdAt", "updatedAt", ] },
       raw: true,
       nest: true,
     });
-    return {
-      result: data,
-    };
+    const data = {
+      ...product,
+      product_detail: detail.filter((d) => d.product_id === Number(id))
+    }
+    if (product && detail) {
+      return res = {
+        message: 'Get product success',
+        success: true,
+        result: data
+      }
+    } else {
+      return res = {
+        message: 'Get product failed',
+        success: false,
+      }
+    }
   } catch (e) {
     console.log(e);
   }
 };
 
-const getBrandByCategoryId = async (category_child_id) => {
+const deleteProduct = async (data) => {
+  let res ={}
   try {
-    if (!category_child_id) {
-      return {
-        errCode: 1,
-        errMessage: "Missing required parameter",
-      };
+    const product = await db.Product.destroy({
+      where: {
+        id: data.id
+      }
+    })
+    if (product) {
+      return res = {
+        message: "Delete product successed",
+        success: true
+      }
     } else {
-      const data = await db.Brand.findAll({
-        attributes: { exclude: ["created_at", "updated_at"] },
-        where: {
-          category_child_id: category_child_id,
-        },
-        // include: [
-        //   {model: db.Brand}
-        // ],
-        raw: true,
-        nest: true,
-      });
-      return {
-        result: data,
-      };
+      return res = {
+        message: "Delete product failed",
+        success: false
+      }
     }
-  } catch (e) {
-    console.log(e);
-    throw e;
   }
-};
-
-const getCategoryChild = async (category_id) => {
-  try {
-    if (!category_id) {
-      return {
-        errCode: 1,
-        errMessage: "Missing required parameter",
-      };
-    } else {
-      const data = await db.ChildCategory.findAll({
-        attributes: { exclude: ["created_at", "updated_at"] },
-        where: {
-          category_id: category_id,
-        },
-        // include: [
-        //   {model: db.CategoryChild}
-        // ],
-        raw: true,
-        nest: true,
-      });
-      return {
-        result: data,
-      };
-    }
-  } catch (e) {
-    console.log(e);
-    throw e;
+  catch (e) {
+    console.log(e)
   }
 }
 
 module.exports = {
-  getBrandByCategoryId: getBrandByCategoryId,
-  getCategoryList: getCategoryList,
-  createProduct: createProduct,
-  editProduct: editProduct,
-  getCategoryChild: getCategoryChild,
+  updateProduct: updateProduct,
+  getProductList: getProductList,
+  getProductById: getProductById,
+  deleteProduct: deleteProduct,
 };

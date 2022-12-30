@@ -69,9 +69,28 @@ const deleteBrand = async(req, res) => {
   }
 }
 
+const getAllBrands = async (req, res) => {
+  try {
+    const response = await brandService.getAllBrands()
+    if (response) {
+      return res.status(200).json({
+        message: response.message,
+        success: response.success,
+        result: response.result
+      })
+    }
+  }
+  catch {
+    return res.status(500).json({
+      message: 'Error from server'
+    })
+  }
+}
+
 module.exports = {
   getBrandsById: getBrandsById,
   updateBrand: updateBrand,
   createBrand: createBrand,
   deleteBrand: deleteBrand,
+  getAllBrands: getAllBrands,
 }
