@@ -7,24 +7,24 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
-      },
-      email: {
+      }, 
+      coupon_name: {
         type: Sequelize.STRING
       },
-      password: {
-        type: Sequelize.STRING
+      coupon_start: {
+        type: Sequelize.DATE
       },
-      name: {
-        type: Sequelize.STRING
+      coupon_end: {
+        type: Sequelize.DATE
       },
-      phone_number: {
-        type: Sequelize.STRING
-      },
-      address: {
-        type: Sequelize.STRING
-      },
-      role: {
+      coupon_type: {
         type: Sequelize.INTEGER
+      },
+      coupon_value: {
+        type: Sequelize.INTEGER
+      },
+      coupon_code: {
+        type: Sequelize.STRING
       },
       createdAt: {
         type: Sequelize.DATE

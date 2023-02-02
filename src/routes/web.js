@@ -38,8 +38,8 @@ const initWebRoutes = (app) => {
 
   // ProductController
   router.post('/api/updateProduct', verifyToken, productController.updateProduct)
-  router.get('/api/getProductList', verifyToken, productController.getProductList)
-  router.get('/api/getProductById', verifyToken, productController.getProductById)
+  router.get('/api/getProductList',  productController.getProductList)
+  router.get('/api/getProductById',  productController.getProductById)
   router.post('/api/deleteProduct', verifyToken, productController.deleteProduct)
 
   return app.use("/", router)

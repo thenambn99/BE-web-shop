@@ -22,7 +22,7 @@ const handleRegister = async (data) => {
     if (user) {
       return (response = {
         message: "Email is already in use!",
-        success: true,
+        success: false,
       });
     }
     if (
@@ -43,7 +43,7 @@ const handleRegister = async (data) => {
         password: passwordHashed,
         phone_number: data.phone_number,
         address: data.address,
-        role: data.role,
+        role: data.role ? data.role : 1,
       });
       if (result) {
         return (response = {
@@ -86,12 +86,6 @@ const handleLogin = async (data) => {
       });
     }
 
-    if (user.role === 1) {
-      return response = {
-        message: "Email or password is invalid",
-        success: false
-      }
-    }
 
     const passwordIsValid = bcrypt.compareSync(data.password, user.password);
     if (!passwordIsValid) {

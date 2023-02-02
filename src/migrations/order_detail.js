@@ -8,26 +8,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      coupon_id: {
+      order_id: {
         type: Sequelize.INTEGER
       },
-      coupon_name: {
-        type: Sequelize.STRING
-      },
-      coupon_start: {
-        type: Sequelize.DATE
-      },
-      coupon_end: {
-        type: Sequelize.DATE
-      },
-      coupon_type: {
+      product_id: {
         type: Sequelize.INTEGER
       },
-      coupon_value: {
+      product_quantity: {
         type: Sequelize.INTEGER
       },
-      coupon_code: {
-        type: Sequelize.STRING
+      product_size: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         type: Sequelize.DATE
