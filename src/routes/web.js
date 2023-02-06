@@ -4,6 +4,7 @@ import userController from '../controllers/userController'
 import productController from '../controllers/productController'
 import categoryController from '../controllers/categoryController'
 import brandController from '../controllers/brandController'
+import couponController from '../controllers/couponController'
 import { refreshToken, verifyToken } from '../middleware/authToken'
 const router = express.Router()
 
@@ -42,6 +43,10 @@ const initWebRoutes = (app) => {
   router.get('/api/getProductById',  productController.getProductById)
   router.post('/api/deleteProduct', verifyToken, productController.deleteProduct)
 
+
+  // CouponsController
+  router.post('/api/updateCoupon', verifyToken, couponController.updateCoupon)
+  router.get('/api/getAllCoupons', verifyToken, couponController.getAllCoupons)
   return app.use("/", router)
 
 }
