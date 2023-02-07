@@ -16,7 +16,29 @@ const getAllCoupons = async () => {
   } catch (e) {
     console.log(e);
   }
-}
+};
+
+const deleteCoupon = async (data) => {
+  let res = {};
+  try {
+    const coupon = await db.Coupon.destroy({
+      where: { id: data.id },
+    });
+    if (coupon) {
+      return (res = {
+        message: "Delete coupon successed",
+        success: true,
+      });
+    } else {
+      return (res = {
+        message: "Delete coupon failed",
+        success: false,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const updateCoupon = async (data) => {
   let res = {};
@@ -37,10 +59,10 @@ const updateCoupon = async (data) => {
           },
         }
       );
-      return res = {
+      return (res = {
         message: "Update coupon success",
-        success: true
-      }
+        success: true,
+      });
     }
     if (!data.id) {
       await db.Coupon.create({
@@ -51,9 +73,37 @@ const updateCoupon = async (data) => {
         coupon_value: data.coupon_value,
         coupon_code: data.coupon_code,
       });
-      return res = {
+      return (res = {
         message: "Create coupon success",
-        success: true
+        success: true,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const getCouponByCode = async (data) => {
+  let res = {};
+  try {
+    const coupon = await db.Coupon.findOne({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+      where: {
+        coupon_code: data.code,
+      },
+      raw: true,
+      nest: true,
+    });
+    if (coupon) {
+      return (res = {
+        message: "Get coupon success",
+        success: true,
+        result: coupon
+      });
+    } else {
+      return res = {
+        message: "Get coupon failed",
+        success: false,
       }
     }
   } catch (e) {
@@ -64,4 +114,6 @@ const updateCoupon = async (data) => {
 module.exports = {
   updateCoupon: updateCoupon,
   getAllCoupons: getAllCoupons,
+  deleteCoupon: deleteCoupon,
+  getCouponByCode: getCouponByCode,
 };

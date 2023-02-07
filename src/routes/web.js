@@ -47,6 +47,8 @@ const initWebRoutes = (app) => {
   // CouponsController
   router.post('/api/updateCoupon', verifyToken, couponController.updateCoupon)
   router.get('/api/getAllCoupons', verifyToken, couponController.getAllCoupons)
+  router.post('/api/deleteCoupon', verifyToken, couponController.deleteCoupon)
+  router.post('/api/getCouponByCode', verifyToken, couponController.getCouponByCode)
   return app.use("/", router)
 
 }

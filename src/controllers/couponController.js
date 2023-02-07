@@ -29,7 +29,40 @@ const getAllCoupons = async (req, res) => {
   }
 }
 
+const deleteCoupon = async (req, res) => {
+  try {
+    const response = await couponService.deleteCoupon(req.body);
+    return res.status(200).json({
+      message: response.message,
+      success: response.success,
+    });
+  }
+  catch {
+    return res.status(500).json({
+      message: "Error from server",
+    });
+  }
+}
+
+const getCouponByCode = async (req, res) => {
+  try {
+    const response = await couponService.getCouponByCode(req.body);
+    return res.status(200).json({
+      message: response.message,
+      success: response.success,
+      result: response.result
+    });
+  }
+  catch {
+    return res.status(500).json({
+      message: "Error from server",
+    });
+  }
+}
+
 module.exports = {
   updateCoupon: updateCoupon,
   getAllCoupons: getAllCoupons,
+  deleteCoupon: deleteCoupon,
+  getCouponByCode: getCouponByCode
 };
