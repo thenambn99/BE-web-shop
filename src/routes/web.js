@@ -5,6 +5,8 @@ import productController from '../controllers/productController'
 import categoryController from '../controllers/categoryController'
 import brandController from '../controllers/brandController'
 import couponController from '../controllers/couponController'
+import orderController from "../controllers/orderController"
+import dashboardController from "../controllers/dashboardController"
 import { refreshToken, verifyToken } from '../middleware/authToken'
 const router = express.Router()
 
@@ -49,6 +51,18 @@ const initWebRoutes = (app) => {
   router.get('/api/getAllCoupons', verifyToken, couponController.getAllCoupons)
   router.post('/api/deleteCoupon', verifyToken, couponController.deleteCoupon)
   router.post('/api/getCouponByCode', verifyToken, couponController.getCouponByCode)
+
+  // OrderController
+  router.post('/api/createOrder', verifyToken, orderController.createOrder)
+  router.get('/api/getAllOrders', verifyToken, orderController.getAllOrders)
+  router.post('/api/changeOrderStatus', verifyToken, orderController.changeOrderStatus)
+  router.post('/api/deleteOrder', verifyToken, orderController.deleteOrder)
+  router.post('/api/getPaymentList', verifyToken, orderController.getPaymentList)
+  router.post('/api/getOrderDetail', verifyToken, orderController.getOrderDetail)
+  router.post('/api/cancelOrder', verifyToken, orderController.cancelOrder)
+
+  // DashBoardController
+  router.get('/api/getDashboardData', verifyToken, dashboardController.getDashboardData)
   return app.use("/", router)
 
 }
