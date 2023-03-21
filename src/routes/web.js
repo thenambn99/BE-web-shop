@@ -26,7 +26,7 @@ const initWebRoutes = (app) => {
   router.post('/api/deleteUser', verifyToken, userController.deleteUser)
 
   // Categories
-  router.get('/api/getAllCategories', verifyToken, categoryController.getAllCategories)
+  router.get('/api/getAllCategories', categoryController.getAllCategories)
   router.post('/api/updateCategory', verifyToken, categoryController.updateCategory)
   router.post('/api/createCategory', verifyToken, categoryController.createCategory)
   router.post('/api/deleteCategory', verifyToken, categoryController.deleteCategory)
@@ -48,9 +48,9 @@ const initWebRoutes = (app) => {
 
   // CouponsController
   router.post('/api/updateCoupon', verifyToken, couponController.updateCoupon)
-  router.get('/api/getAllCoupons', verifyToken, couponController.getAllCoupons)
+  router.get('/api/getAllCoupons', couponController.getAllCoupons)
   router.post('/api/deleteCoupon', verifyToken, couponController.deleteCoupon)
-  router.post('/api/getCouponByCode', verifyToken, couponController.getCouponByCode)
+  router.post('/api/getCouponByCode', couponController.getCouponByCode)
 
   // OrderController
   router.post('/api/createOrder', verifyToken, orderController.createOrder)
